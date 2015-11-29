@@ -1,0 +1,117 @@
+---
+title: "Robust Regression"
+author: "Aimee, Roger and Hari"
+date: "November 29, 2015"
+output: html_document
+---
+
+# 1. The Laplace distribution
+
+## 1. Write down the likelihood for $\mu$, $\Lambda$
+
+$\prod_{n=1} \frac{1}{2}\Lambda e^{-\Lambda |t_{n} - \mu|}$
+
+## 2. Show that
+
+$\mu_{mle} = median(t_{1}, ..., t_{N})$
+
+The likelihood function expands to:
+
+$f(\mu,\Lambda) = \frac{1}{2} \Lambda e^{\sum_{n} -\Lambda |t_{n}-\mu|}$
+
+Maximizing the likelihood function is equivalent to maximizing the log of the likelihood function.
+
+$log(f(\mu,\Lambda)) = Nlog(\frac{1}{2}) + Nlog(\Lambda) + \sum_{n} -\Lambda |t_{n}-\mu|$
+
+Taking the derivate with respect to $\mu$ and set equal to 0:
+
+$-\Lambda \sum_{n} sgn|t_{n} - \mu| = 0$
+
+If $N$ is odd there are $\frac{N-1}{2}$ cases where $t_{n} < \mu$ and for the other $\frac{N-1}{2}$ cases $t_{n} > \mu$ and thus we have an equality with zero and the median of $t_{n}$ is $\mu_{mle}$. If $N$ is even, there is no way to satisfy this equality but we can minimize it by taking either $\frac{t_{n}}{N}$ or $\frac{t_{n}}{N-1}$
+
+## 3. Show that
+$\Lambda_{mle} = (\frac{1}{N} \sum_{n} |t_{n}-\mu_{mle}|)^{-1}$ 
+
+Taking the derivative of the likelihood function and setting it equal to zero results in: 
+
+$\frac{N}{\Lambda} =  \sum_{n} |t_{n} - \mu |$
+
+which implies 
+
+$\Lambda = (\frac{1}{N} \sum_{n} |t_{n} - \mu |)^{-1}$
+
+And replacing $\mu$ with $\mu_{mle}$, we get 
+
+$\Lambda = (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle} |)^{-1}$
+
+#4. [Check this part] 
+
+Show that 
+
+$\Sigma_{mle} = 2 \frac{1}{n} sum_{n} | t_{n} - \mu_{mle} |$
+
+I think that 
+
+$\Sigma = var[t]$ and $var[t] = \frac{2}{\Lambda^{2}}$
+
+therefore 
+
+$\Sigma_{mle} = 2 (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle}|)^{2}$ makes sense but we are asked to prove something else 
+
+# 2. EM algorithm for robust regression 
+
+##1. Show that if 
+
+$t_{n} | x_{n},w,q,\eta_{n}$ ~ $N(\phi(x_{n}^{T}w,(\eta_{n}q)^{-1}I))$ and $\eta_{n}$ ~ $Gam(\frac{\nu}{2}, \frac{\nu}{2} - 1)$ then
+
+$\eta_{n} | t_{n},x_{n},w,q$ ~ $Gam(\frac{(\nu+1)}{2},\frac{(\nu + q e_{n}^2)}{2} - 1 )$
+
+with $e_{n} := t_n - \phi(x_{n})^{T}w$
+
+$p(\eta_{n} | t_{n},x_{n},w,q) = p(\eta) p(t_{n} | x_{n},w,q,\eta_{n})$
+
+$p(\eta) = \frac{({\frac{\nu}{2} - 1})^\frac{\nu}{2}}{(\frac{\nu}{2} - 1)!} (\nu)^{\frac{\nu}{2} - 1} exp^{ -(\frac{\nu}{2} - 1) \eta_{n} }$
+
+$p(t_{n} | x_{n},w,q,\eta_{n}) = \frac{1}{(2 \pi)^{\frac{1}{2}}} (q \eta_{n})^\frac{1}{2} exp^{ - \frac{1}{2} e_{n}^2 q}$
+
+which implies 
+
+$p(\eta_{n} | t_{n},x_{n},w,q) ~ exp^{ -(\frac{\nu}{2} - 1) \eta_{n} } * exp^{ - \frac{1}{2} e_{n}^2 q} *(\nu)^{\frac{\nu}{2} - 1} * \eta_{n}^{\frac{1}{2}}$
+
+$p(\eta_{n} | t_{n},x_{n},w,q) ~ exp^{ - (\frac{\nu + q e_{n}^{2}}{2} - 1) \eta_{n}}   \eta_{n}^{(\frac{\nu - 1}{2})}$
+
+Therefore
+
+$\eta_{n} | t_{n},x_{n},w,q$ ~ $Gam(\frac{(\nu+1)}{2},\frac{(\nu + q e_{n}^2)}{2} - 1 )$
+
+##2. Show that 
+
+when $\theta = (w,q)$ and $\theta^{'} = (w^{'},q^{'})$
+
+$Q(\theta,theta^{'}) = \frac{N}{2}log(q) - frac{q}{2}(t - \Phi w)^T)diag(\mathbb{E}[\eta | T,x,\theta^{'}])(t - \Phi w) + C$
+
+where 
+
+$\mathbb{E}[\eta | T,x,\theta^{'}]$ is a vector with elements $\frac{\nu + 1}{\nu + q^{'}(t_{N} - \phi(x_n)^{T}w^{'})^2 - 2}$
+
+
+$Q(\theta,\theta^{'}) = \int log p(t | \eta, \theta)p( \eta | t, \theta^{'})d\eta$
+
+$Q(\theta,\theta^{'}) = \mathbb{E}(Log(L(\theta | t, \eta)))$
+
+$Q(\theta,\theta^{'}) = \mathbb{E}(Log(L(t | \eta , \theta) p ( \eta, \theta, t)))$
+
+$Q(\theta,\theta^{'}) =  \mathbb{E}(\frac{N}{2}log(q) - \frac{1}{2} (t - \Phi w)^{T} q\eta_{n}I (t - \Phi w) + C)$
+
+$Q(\theta,\theta^{'}) =  \frac{N}{2}log(q) - \frac{q}{2}diag(\mathbb{E}[\eta | T,x,\theta^{'}]) + C$
+
+and 
+
+$\mathbb{E}[\eta | t,x,\theta^{'}] = \frac{(\frac{(\nu+1)}{2})}{(\frac{(\nu + q^{'} (t_{n} - \phi(x_{n})^{t} w^{'})^2 - 2)}{2})}$
+
+therefore
+
+$\mathbb{E}[\eta | t,x,\theta^{'}] = \frac{{(\nu+1)})}{(\nu + q^{'} (t_{n} - \phi(x_{n})^{t} w^{'})^2 - 2))}$
+
+
+
