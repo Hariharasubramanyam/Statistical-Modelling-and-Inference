@@ -2,7 +2,7 @@
 title: "Robust Regression"
 author: "Aimee, Roger and Hari"
 date: "November 29, 2015"
-output: html_document
+output: pdf_document
 ---
 
 # 1. The Laplace distribution
@@ -44,19 +44,19 @@ And replacing $\mu$ with $\mu_{mle}$, we get
 
 $\Lambda = (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle} |)^{-1}$
 
-#4. [Check this part] 
-
-Show that 
+#4. Show that 
 
 $\Sigma_{mle} = 2 \frac{1}{n} sum_{n} | t_{n} - \mu_{mle} |$
 
-I think that 
-
 $\Sigma = var[t]$ and $var[t] = \frac{2}{\Lambda^{2}}$
 
-therefore 
+Using the equivariance property
 
-$\Sigma_{mle} = 2 (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle}|)^{2}$ makes sense but we are asked to prove something else 
+$\Sigma_{mle} =  \frac{2}{\Lambda_{mle}^{2}}$
+
+Therefore 
+
+$\Sigma_{mle} = 2 (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle}|)^{2}$ 
 
 # 2. EM algorithm for robust regression 
 

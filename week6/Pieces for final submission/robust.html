@@ -96,14 +96,14 @@ img {
 <p><span class="math">\(\Lambda = (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle} |)^{-1}\)</span></p>
 </div>
 </div>
-<div id="check-this-part" class="section level1">
-<h1>4. [Check this part]</h1>
-<p>Show that</p>
+<div id="show-that-2" class="section level1">
+<h1>4. Show that</h1>
 <p><span class="math">\(\Sigma_{mle} = 2 \frac{1}{n} sum_{n} | t_{n} - \mu_{mle} |\)</span></p>
-<p>I think that</p>
 <p><span class="math">\(\Sigma = var[t]\)</span> and <span class="math">\(var[t] = \frac{2}{\Lambda^{2}}\)</span></p>
-<p>therefore</p>
-<p><span class="math">\(\Sigma_{mle} = 2 (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle}|)^{2}\)</span> makes sense but we are asked to prove something else</p>
+<p>Using the equivariance property</p>
+<p><span class="math">\(\Sigma_{mle} = \frac{2}{\Lambda_{mle}^{2}}\)</span></p>
+<p>Therefore</p>
+<p><span class="math">\(\Sigma_{mle} = 2 (\frac{1}{N} \sum_{n} |t_{n} - \mu_{mle}|)^{2}\)</span></p>
 </div>
 <div id="em-algorithm-for-robust-regression" class="section level1">
 <h1>2. EM algorithm for robust regression</h1>
@@ -121,7 +121,7 @@ img {
 <p>Therefore</p>
 <p><span class="math">\(\eta_{n} | t_{n},x_{n},w,q\)</span> ~ <span class="math">\(Gam(\frac{(\nu+1)}{2},\frac{(\nu + q e_{n}^2)}{2} - 1 )\)</span></p>
 </div>
-<div id="show-that-2" class="section level2">
+<div id="show-that-3" class="section level2">
 <h2>2. Show that</h2>
 <p>when <span class="math">\(\theta = (w,q)\)</span> and <span class="math">\(\theta^{'} = (w^{'},q^{'})\)</span></p>
 <p><span class="math">\(Q(\theta,theta^{'}) = \frac{N}{2}log(q) - frac{q}{2}(t - \Phi w)^T)diag(\mathbb{E}[\eta | T,x,\theta^{'}])(t - \Phi w) + C\)</span></p>
